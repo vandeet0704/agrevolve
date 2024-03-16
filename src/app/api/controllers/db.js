@@ -1,4 +1,4 @@
-const { Markets } = require("../models/db");
+const { Markets, Tomato, Tobacco } = require("../models/db");
 
 async function handleSayHello(req, res) {
     return res.json({ message: "Welcome to the API from Router" });
@@ -10,13 +10,13 @@ async function handleGenerateMarkets(req, res) {
     return res.json({ message: "Document Added Successfully" });
 }
 
-// No Use of it
+// Get States
 async function handleGetStates(req, res) {
-    const stateName = req.params.state;
     const result = await Markets.find({});
     return res.json(result.map((states) => states["state"]));
 }
 
+// Get Districts
 async function handleGetDistricts(req, res) {
     const stateName = req.params.state;
     const state = await Markets.findOne({ state: stateName });
@@ -24,6 +24,7 @@ async function handleGetDistricts(req, res) {
     return res.json(districts.map((district) => district["district"]));
 }
 
+// Get Markets
 async function handleGetMarkets(req, res) {
     const stateName = req.params.state;
     const districtName = req.params.district;
@@ -38,10 +39,23 @@ async function handleGetMarkets(req, res) {
     return res.json(markets.map((market) => market["market"]));
 }
 
+async function handleGenerateTomato(req, res) {
+    const body = req.body;
+    await Tobacco.insertMany(body);
+    return res.json({ message: "Document Added Successfully" });
+}
+
+async function handleGetTomatoes(req, res) {
+    const result = await Tobacco.find({});
+    return res.json(result);
+}
+
 module.exports = {
     handleSayHello,
     handleGenerateMarkets,
     handleGetStates,
     handleGetDistricts,
     handleGetMarkets,
+    handleGetTomatoes,
+    handleGenerateTomato,
 };
