@@ -1,29 +1,40 @@
 const express = require("express");
-require("dotenv").config();
+var cors = require("cors");
+const bodyParser = require("body-parser");
 const {
-    handleSayHello,
-    handleGenerateMarkets,
+    handleGetCommodities,
     handleGetStates,
     handleGetDistricts,
     handleGetMarkets,
-    handleGetTomatoes,
-    handleGenerateTomato,
-} = require("./controllers/db");
+} = require("./controllers/marketdb");
+const {
+    handleGetCommodity,
+    handleCreateCommodity,
+    handleGetCommodityFilter,
+} = require("./controllers/commoditydb");
+
+require("dotenv").config();
 
 const app = express();
 const PORT = 8080;
+app.use(
+    bodyParser.urlencoded({
+        extended: true,
+    })
+);
+app.use(express.json({ limit: "5000mb" }));
+app.use(cors());
 
-app.use(express.json());
-
-app.get("/api", handleSayHello);
-app.post("/api/create", handleGenerateMarkets);
-
+// Data
+app.get("/api/commodities", handleGetCommodities);
 app.get("/api/states", handleGetStates);
 app.get("/api/districts/:state", handleGetDistricts);
 app.get("/api/markets/:state/:district", handleGetMarkets);
 
-app.get("/api/tomato", handleGetTomatoes);
-app.post("/api/tomato/create", handleGenerateTomato);
+// Commodities
+app.get("/api/commodity/:commodity", handleGetCommodity);
+app.post("/api/commodity/create/:commodity", handleCreateCommodity);
+app.post("/api/commodity", handleGetCommodityFilter);
 
 app.listen(PORT, () => {
     console.log(`API Server started on port ${PORT}`);

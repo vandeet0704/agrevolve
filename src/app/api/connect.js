@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
 
-// Atlas MarketData
-const connectToMongoDBMarket = mongoose.createConnection(
-    String(process.env.MONGODB_URL_MARKET)
+// Atlas Data
+const connectToMongoDBData = mongoose.createConnection(
+    String(process.env.MONGODB_URL_DATA)
 );
-if (connectToMongoDBMarket) {
-    console.log("Connected to MarketData database in MongoDB");
+if (connectToMongoDBData) {
+    console.log("Connected to database in MongoDB");
 }
 
 // Atlas CommodityData
@@ -17,16 +17,25 @@ if (connectToMongoDBCommodity) {
     console.log("Connected to Commodity database in MongoDB");
 }
 
-// Local MongoDB
+// Local MongoDB Data
 const connectToMongoDBLocal = mongoose.createConnection(
-    String(process.env.MONGO_URL_LOCAL)
+    String(process.env.MONGO_URL_LOCAL_DATA)
 );
 if (connectToMongoDBLocal) {
     console.log("Connected to Local MongoDB");
 }
 
+// Local MongoDB CommodityData
+const connectToMongoDBLocalCommodity = mongoose.createConnection(
+    String(process.env.MONGO_URL_LOCAL_COMMODITY)
+);
+if (connectToMongoDBLocalCommodity) {
+    console.log("Connected to Local Commodity MongoDB");
+}
+
 module.exports = {
-    connectToMongoDBMarket,
+    connectToMongoDBData,
     connectToMongoDBCommodity,
     connectToMongoDBLocal,
+    connectToMongoDBLocalCommodity,
 };
